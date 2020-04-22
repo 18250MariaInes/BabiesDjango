@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from babies.models import Baby
-from parents.serializers import ParentSerializer
+from parents.serializer import ParentSerializer
 
 class BabySerializer(serializers.ModelSerializer):
     class Meta:
