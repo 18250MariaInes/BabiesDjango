@@ -15,4 +15,4 @@ class Event(models.Model):
         blank=True
     )
     def __str__(self):
-        return 'Event: {}'.format(self.name)
+        return 'Event: {}'.format(self.event_type)
