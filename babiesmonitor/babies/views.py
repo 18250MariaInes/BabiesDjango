@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from permissions.services import APIPermissionClassFactory
 from babies.models import Baby
+from events.models import Event
 from babies.serializer import BabySerializer
 from events.serializer import EventSerializer
 
@@ -42,4 +43,17 @@ class BabyViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def events(self, request, pk=None):
         baby = self.get_object()
-        return (Events.objects.filter(baby=baby).data)
+        events_baby=[]
+        for event in Event.objects.filter(baby=baby):
+            events_baby.append(BabySerializer(event).data)
+        return Response(events_baby)
+
+
+
+    """@action(detail=True, methods=['get'])
+    def babies(self, request, pk=None):
+        parent = self.get_object()
+        babies_user = []
+        for baby in Baby.objects.filter(parent=parent):
+            babies_user.append(BabySerializer(baby).data)
+        return Response(babies_user)"""
