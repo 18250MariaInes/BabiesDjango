@@ -10,7 +10,7 @@ from babies.serializer import BabySerializer
 from events.serializer import EventSerializer
 
 def evaluate(user, obj, request):
-    return user.first_name == obj.parent.name
+    return user.username == obj.parent.name
 
 class BabyViewSet(viewsets.ModelViewSet):
     queryset = Baby.objects.all()
@@ -28,6 +28,7 @@ class BabyViewSet(viewsets.ModelViewSet):
                     'destroy': False,
                     'update': True,
                     'partial_update': 'babies.change_baby',
+                    'events':evaluate
                 }
             }
         ),
@@ -45,15 +46,7 @@ class BabyViewSet(viewsets.ModelViewSet):
         baby = self.get_object()
         events_baby=[]
         for event in Event.objects.filter(baby=baby):
-            events_baby.append(BabySerializer(event).data)
+            events_baby.append(EventSerializer(event).data)
         return Response(events_baby)
 
 
-
-    """@action(detail=True, methods=['get'])
-    def babies(self, request, pk=None):
-        parent = self.get_object()
-        babies_user = []
-        for baby in Baby.objects.filter(parent=parent):
-            babies_user.append(BabySerializer(baby).data)
-        return Response(babies_user)"""
